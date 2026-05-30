@@ -26,9 +26,7 @@ if (process.env.NODE_ENV === "production") {
 app.use("/api", limiter);
 
 // Routes
-app.get("/", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "public", "index.html"));
-});
+
 app.post(
   "/api/encrypt",
   validate(CipherSchema),

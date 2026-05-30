@@ -10,7 +10,6 @@ const validation_middleware_1 = require("./middlewares/validation.middleware");
 const rateLimit_middleware_1 = require("./middlewares/rateLimit.middleware");
 const errorHandler_middleware_1 = require("./middlewares/errorHandler.middleware");
 const cipher_schema_1 = require("./schemas/cipher.schema");
-const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 const cipherController = new cipher_controller_1.CipherController();
 // Middlewares پایه
@@ -26,9 +25,6 @@ if (process.env.NODE_ENV === "production") {
 // Apply rate limiting to all routes
 app.use("/api", rateLimit_middleware_1.limiter);
 // Routes
-app.get("/", (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, "public", "index.html"));
-});
 app.post("/api/encrypt", (0, validation_middleware_1.validate)(cipher_schema_1.CipherSchema), cipherController.encrypt.bind(cipherController));
 app.post("/api/decrypt", (0, validation_middleware_1.validate)(cipher_schema_1.CipherSchema), cipherController.decrypt.bind(cipherController));
 // Health check
