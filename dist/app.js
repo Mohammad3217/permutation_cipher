@@ -17,7 +17,6 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "1mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.static("public"));
-// فقط در production از helmet استفاده کن
 if (process.env.NODE_ENV === "production") {
     const helmet = require("helmet");
     app.use(helmet());
