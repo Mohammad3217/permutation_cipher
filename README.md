@@ -4,6 +4,11 @@
 پروژه درس مبانی رایانش امن دانشگاه  
 
 ## 🌐 پیش‌نمایش زنده
+(در صورت امکان با فیلترشکن باز کنید)
+
+https://permutation-cipher.onrender.com/
+
+یا
 
 https://permutation-cipher-lovat.vercel.app/index.html
 
