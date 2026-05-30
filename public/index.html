@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>رمزنگاری جایگشتی | Permutation Cipher</title>
+    <link rel="stylesheet" href="/output.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+    <style>
+      * {
+        font-family: "Vazirmatn", system-ui, sans-serif;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .toast {
+        animation: fadeIn 0.3s ease-out;
+      }
+      .result-card {
+        transition: all 0.3s ease;
+      }
+      .result-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* تنظیم برای زبان فارسی */
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Tahoma,
+          Geneva,
+          Verdana,
+          sans-serif;
+      }
+
+      /* انیمیشن مینیمال برای محتوای تب‌ها */
+      .tab-content {
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      .tab-content.hidden {
+        display: none;
+        opacity: 0;
+      }
+
+      .tab-content:not(.hidden) {
+        display: block;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body class="bg-linear-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="">
+    </div>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">
+          🔐 رمزنگاری جایگشتی
+        </h1>
+        <div class="flex justify-evenly flex-col md:flex-row">
+          <p class="text-gray-600">
+          رمزنگاری و رمزگشایی متن با استفاده از روش دوم جایگشت
+        </p>
+        <p class="text-gray-600">
+       محمد زرقی | پروژه مبانی رایانش امن | استاد عاشوری
+        </p>
+        </div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="grid scale-90 origin-top md:scale-100 md:grid-cols-2 md:gap-8">
+        <div class="gap-1">
+          <div class="max-w-2xl mx-auto px-6">
+            <!-- هدر تب‌ها -->
+            <div class="flex gap-10 justify-center-safe">
+              <button
+                id="tabEncryptBtn"
+                class="tab-btn px-6 py-3 text-base font-medium rounded-t-lg transition-all duration-200 bg-green-600 text-white shadow-md -mb-px"
+                data-tab="encrypt"
+              >
+                🔒 رمزنگاری
+              </button>
+              <button
+                id="tabDecryptBtn"
+                class="tab-btn px-6 py-3 text-base font-medium rounded-t-lg transition-all duration-200 text-gray-600 bg-white hover:text-gray-900 hover:bg-gray-100"
+                data-tab="decrypt"
+              >
+                🔓 رمزگشایی
+              </button>
+            </div>
+          </div>
+          <!-- محتوای تب رمزنگاری -->
+
+          <!-- Encrypt Card -->
+          <div class="bg-white rounded-2xl shadow-xl p-6" id="encryptContent">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold text-green-600">🔒 رمزنگاری</h2>
+              <div
+                class="bg-green-100 px-3 py-1 rounded-full text-sm text-green-700"
+              >
+                Encrypt
+              </div>
+            </div>
+
+            <form id="encryptForm">
+              <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2"
+                  >متن اصلی:</label
+                >
+                <textarea
+                  id="encryptText"
+                  rows="4"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  placeholder="متن خود را وارد کنید..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2"
+                  >کلید جایگشت (مثال: [2,3,1,4]):</label
+                >
+                <input
+                  dir="ltr"
+                  type="text"
+                  id="encryptKey"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  placeholder="[2,3,1,4]"
+                  required
+                />
+                <p class="text-sm text-gray-500 mt-1">
+                  کلید باید شامل اعداد 1 تا n بدون تکرار باشد
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                id="encryptBtn"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition duration-300 transform hover:scale-105"
+              >
+                رمزنگاری 🚀
+              </button>
+            </form>
+          </div>
+
+          <!-- Decrypt Card -->
+          <div
+            class="bg-white tab-content hidden rounded-2xl shadow-xl p-6"
+            id="decryptContent"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold text-blue-600">🔓 رمزگشایی</h2>
+              <div
+                class="bg-blue-100 px-3 py-1 rounded-full text-sm text-blue-700"
+              >
+                Decrypt
+              </div>
+            </div>
+
+            <form id="decryptForm">
+              <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2"
+                  >متن رمز شده:</label
+                >
+                <textarea
+                  id="decryptText"
+                  rows="4"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="متن رمز شده را وارد کنید..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-2"
+                  >کلید جایگشت:</label
+                >
+                <input
+                  dir="ltr"
+                  type="text"
+                  id="decryptKey"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="[2,3,1,4]"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                id="decryptBtn"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 transform hover:scale-105"
+              >
+                رمزگشایی 🔑
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="mt-12">
+          <div
+            class="bg-linear-to-r from-purple-50 to-pink-50 rounded-2xl shadow-lg p-6 result-card"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-xl font-bold text-purple-800">📋 نتیجه:</h3>
+              <button
+                id="copyButton"
+                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition text-sm"
+              >
+                کپی 📋
+              </button>
+            </div>
+            <div
+              id="resultContent"
+              class="bg-white  rounded-lg p-4 font-mono text-gray-800 wrap-break-words max-h-60 overflow-y-auto"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Toast Container -->
+    <div
+      id="toastContainer"
+      class="fixed top-4 left-4 right-4 z-50 flex flex-col items-end space-y-2"
+    ></div>
+
+    <script>
+      const API_BASE = window.location.origin + "/api";
+
+      // Disable button while processing
+      function setButtonLoading(button, isLoading) {
+        if (isLoading) {
+          button.disabled = true;
+          button.textContent = "در حال پردازش... ⏳";
+        } else {
+          button.disabled = false;
+          button.textContent =
+            button.id === "encryptBtn" ? "رمزنگاری 🚀" : "رمزگشایی 🔑";
+        }
+      }
+
+      function showToast(message, type = "success") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type === "success" ? "bg-green-500" : "bg-red-500"} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 mb-2`;
+        toast.innerHTML = `
+                <span class="font-semibold">${type === "success" ? "✓" : "⚠️"}</span>
+                <span>${message}</span>
+            `;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      function showResult(result) {
+        const resultSection = document.getElementById("resultSection");
+        const resultContent = document.getElementById("resultContent");
+        resultContent.textContent = result;
+        resultSection.classList.remove("hidden");
+        resultSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      function parseKey(keyStr) {
+        try {
+          // Remove any whitespace
+          keyStr = keyStr.trim();
+          const key = JSON.parse(keyStr);
+          if (!Array.isArray(key)) throw new Error();
+          // Validate key numbers
+          if (!key.every((num) => Number.isInteger(num) && num > 0)) {
+            throw new Error("کلید باید شامل اعداد صحیح مثبت باشد");
+          }
+          return key;
+        } catch (e) {
+          throw new Error(
+            "فرمت کلید نامعتبر است. لطفاً مانند [2,3,1,4] وارد کنید",
+          );
+        }
+      }
+
+      // Encrypt Form Handler
+      const encryptForm = document.getElementById("encryptForm");
+      const encryptBtn = document.getElementById("encryptBtn");
+
+      encryptForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const text = document.getElementById("encryptText").value;
+        const keyStr = document.getElementById("encryptKey").value;
+
+        if (!text.trim()) {
+          showToast("❌ لطفاً متن را وارد کنید", "error");
+          return;
+        }
+
+        if (!keyStr.trim()) {
+          showToast("❌ لطفاً کلید را وارد کنید", "error");
+          return;
+        }
+
+        setButtonLoading(encryptBtn, true);
+
+        try {
+          const key = parseKey(keyStr);
+          const response = await fetch(`${API_BASE}/encrypt`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, key }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showResult(data.result);
+            showToast("✅ " + data.message, "success");
+            // Clear input after successful encryption (optional)
+            // document.getElementById('encryptText').value = '';
+          } else {
+            showToast(
+              "❌ " + (data.error || data.message || "خطا در رمزنگاری"),
+              "error",
+            );
+          }
+        } catch (error) {
+          showToast("❌ " + error.message, "error");
+        } finally {
+          setButtonLoading(encryptBtn, false);
+        }
+
+        return false;
+      });
+
+      // Decrypt Form Handler
+      const decryptForm = document.getElementById("decryptForm");
+      const decryptBtn = document.getElementById("decryptBtn");
+
+      decryptForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const text = document.getElementById("decryptText").value;
+        const keyStr = document.getElementById("decryptKey").value;
+
+        if (!text.trim()) {
+          showToast("❌ لطفاً متن رمز شده را وارد کنید", "error");
+          return;
+        }
+
+        if (!keyStr.trim()) {
+          showToast("❌ لطفاً کلید را وارد کنید", "error");
+          return;
+        }
+
+        setButtonLoading(decryptBtn, true);
+
+        try {
+          const key = parseKey(keyStr);
+          const response = await fetch(`${API_BASE}/decrypt`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, key }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showResult(data.result);
+            showToast("✅ " + data.message, "success");
+          } else {
+            showToast(
+              "❌ " + (data.error || data.message || "خطا در رمزگشایی"),
+              "error",
+            );
+          }
+        } catch (error) {
+          showToast("❌ " + error.message, "error");
+        } finally {
+          setButtonLoading(decryptBtn, false);
+        }
+
+        return false;
+      });
+
+      // Copy Button Handler
+      document
+        .getElementById("copyButton")
+        .addEventListener("click", async () => {
+          const resultText =
+            document.getElementById("resultContent").textContent;
+          if (!resultText) {
+            showToast("❌ متنی برای کپی وجود ندارد", "error");
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(resultText);
+            showToast("📋 متن در کلیپ‌بورد کپی شد!", "success");
+          } catch (err) {
+            // Fallback for older browsers
+            const textarea = document.createElement("textarea");
+            textarea.value = resultText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+            showToast("📋 متن در کلیپ‌بورد کپی شد!", "success");
+          }
+        });
+
+      // Add example key hint
+      const exampleKeys = ["[2,3,1,4]", "[3,1,2]", "[2,1,4,3]"];
+
+      let keyIndex = 0;
+      setInterval(() => {
+        const encryptKeyInput = document.getElementById("encryptKey");
+        const decryptKeyInput = document.getElementById("decryptKey");
+        if (
+          document.activeElement !== encryptKeyInput &&
+          document.activeElement !== decryptKeyInput
+        ) {
+          const example = exampleKeys[keyIndex % exampleKeys.length];
+          encryptKeyInput.placeholder = `مثال: ${example}`;
+          decryptKeyInput.placeholder = `مثال: ${example}`;
+          keyIndex++;
+        }
+      }, 3000);
+    </script>
+    <script>
+      // دریافت المان‌ها
+      const tabEncryptBtn = document.getElementById("tabEncryptBtn");
+      const tabDecryptBtn = document.getElementById("tabDecryptBtn");
+      const encryptContent = document.getElementById("encryptContent");
+      const decryptContent = document.getElementById("decryptContent");
+
+      // تابع تغییر تب
+      function switchTab(tabName) {
+        if (tabName === "encrypt") {
+          // نمایش تب رمزنگاری
+          encryptContent.classList.remove("hidden");
+          decryptContent.classList.add("hidden");
+
+          // تغییر استایل دکمه‌ها
+          tabEncryptBtn.className =
+            "tab-btn px-6 py-3 text-base font-medium rounded-t-lg transition-all duration-200 bg-green-600 text-white shadow-md -mb-px";
+          tabDecryptBtn.className =
+            "tab-btn px-6 py-3 text-base font-medium rounded-t-lg transition-all duration-200 text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100";
+        } else {
+          // نمایش تب رمزگشایی
+          encryptContent.classList.add("hidden");
+          decryptContent.classList.remove("hidden");
+
+          // تغییر استایل دکمه‌ها
+          tabDecryptBtn.className =
+            "tab-btn px-6 py-3 text-base font-medium rounded-t-lg transition-all duration-200 bg-blue-600 text-white shadow-md -mb-px";
+          tabEncryptBtn.className =
+            "tab-btn px-6 py-3 text-base font-medium rounded-t-lg transition-all duration-200 text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100";
+        }
+      }
+
+      // اضافه کردن event listener به دکمه‌ها
+      tabEncryptBtn.addEventListener("click", () => switchTab("encrypt"));
+      tabDecryptBtn.addEventListener("click", () => switchTab("decrypt"));
+    </script>
+  </body>
+</html>

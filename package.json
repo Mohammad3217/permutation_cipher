@@ -1,0 +1,31 @@
+{
+  "name": "permutation-cipher",
+  "version": "1.0.0",
+  "description": "Permutation Cipher API with Node.js and TypeScript",
+  "main": "dist/server.js",
+  "scripts": {
+    "generate-css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/output.css --watch ",
+    "build": "npx typescript tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "nodemon": "^3.1.14",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
