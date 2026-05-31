@@ -5,9 +5,12 @@ import { validate } from "./middlewares/validation.middleware";
 import { limiter } from "./middlewares/rateLimit.middleware";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { CipherSchema } from "./schemas/cipher.schema";
+import { KeywordCipherController } from './controllers/keyword.controller';
+
 
 const app = express();
 const cipherController = new CipherController();
+const keywordController = new KeywordCipherController();
 
 // Middlewares پایه
 app.use(cors());
@@ -35,6 +38,10 @@ app.post(
   validate(CipherSchema),
   cipherController.decrypt.bind(cipherController),
 );
+
+app.post('/api/keyword/encrypt', keywordController.encrypt.bind(keywordController));
+app.post('/api/keyword/decrypt', keywordController.decrypt.bind(keywordController));
+app.post('/api/keyword/info', keywordController.getKeyInfo.bind(keywordController));
 
 // Health check
 app.get("/api/health", (req, res) => {
