@@ -12,7 +12,7 @@ exports.KeywordCipherSchema = zod_1.z.object({
     keyword: zod_1.z
         .string()
         .min(2, "کلمه کلید باید حداقل ۲ حرف باشد")
-        .max(10, "کلمه کلید نباید بیشتر از ۱۰ حرف باشد")
+        .max(26, "کلمه کلید نباید بیشتر از ۲۶ حرف باشد")
         .regex(/^[A-Za-z]+$/, "کلمه کلید باید فقط شامل حروف انگلیسی باشد")
         .transform((keyword) => keyword.toUpperCase()),
 });

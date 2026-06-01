@@ -10,48 +10,29 @@ class CipherController {
     async encrypt(req, res) {
         try {
             let { text, keyword } = req.body;
-            // Sanitize input
             text = (0, helpers_1.sanitizeInput)(text);
-            keyword = (0, helpers_1.sanitizeInput)(keyword).toUpperCase().trim();
-            // Validate keyword
-            const validation = keywordService.validateKeyword(keyword);
-            if (!validation.valid) {
-                return res.status(400).json({
-                    success: false,
-                    error: validation.error,
-                });
-            }
-            // Convert keyword to permutation key
             const key = keywordService.keywordToPermutation(keyword);
             // Encrypt
             const encrypted = permutationService.encrypt(text, key);
             res.json({
                 success: true,
                 result: encrypted,
-                key: key, // برگرداندن کلید ساخته شده برای اطلاع کاربر
-                message: `متن با موفقیت با کلمه کلید "${keyword}" رمزنگاری شد`,
+                key: key,
+                keyword: keyword,
+                message: `متن با موفقیت با کلمه کلید "${keyword}" رمزنگاری شد`
             });
         }
         catch (error) {
             res.status(400).json({
                 success: false,
-                error: error.message,
+                error: error.message || 'خطا در رمزنگاری'
             });
         }
     }
     async decrypt(req, res) {
         try {
             let { text, keyword } = req.body;
-            // Sanitize input
             text = (0, helpers_1.sanitizeInput)(text);
-            keyword = (0, helpers_1.sanitizeInput)(keyword).toUpperCase().trim();
-            const validation = keywordService.validateKeyword(keyword);
-            if (!validation.valid) {
-                return res.status(400).json({
-                    success: false,
-                    error: validation.error,
-                });
-            }
             // Convert keyword to permutation key
             const key = keywordService.keywordToPermutation(keyword);
             // Decrypt
@@ -60,13 +41,14 @@ class CipherController {
                 success: true,
                 result: decrypted,
                 key: key,
-                message: `متن با موفقیت با کلمه کلید "${keyword}" رمزگشایی شد`,
+                keyword: keyword,
+                message: `متن با موفقیت با کلمه کلید "${keyword}" رمزگشایی شد`
             });
         }
         catch (error) {
             res.status(400).json({
                 success: false,
-                error: error.message,
+                error: error.message || 'خطا در رمزگشایی'
             });
         }
     }
