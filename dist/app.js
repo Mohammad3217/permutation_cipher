@@ -9,11 +9,12 @@ const cipher_controller_1 = require("./controllers/cipher.controller");
 const validation_middleware_1 = require("./middlewares/validation.middleware");
 const rateLimit_middleware_1 = require("./middlewares/rateLimit.middleware");
 const errorHandler_middleware_1 = require("./middlewares/errorHandler.middleware");
-const cipher_schema_1 = require("./schemas/cipher.schema");
-const keyword_controller_1 = require("./controllers/keyword.controller");
+// import { CipherSchema } from "./schemas/cipher.schema";
+const keyword_schema_1 = require("./schemas/keyword.schema");
+// import { KeywordCipherController } from './controllers/keyword.controller';
 const app = (0, express_1.default)();
 const cipherController = new cipher_controller_1.CipherController();
-const keywordController = new keyword_controller_1.KeywordCipherController();
+// const keywordController = new KeywordCipherController();
 // Middlewares پایه
 app.use((0, cors_1.default)());
 app.use(express_1.default.json({ limit: "1mb" }));
@@ -26,11 +27,11 @@ if (process.env.NODE_ENV === "production") {
 // Apply rate limiting to all routes
 app.use("/api", rateLimit_middleware_1.limiter);
 // Routes
-app.post("/api/encrypt", (0, validation_middleware_1.validate)(cipher_schema_1.CipherSchema), cipherController.encrypt.bind(cipherController));
-app.post("/api/decrypt", (0, validation_middleware_1.validate)(cipher_schema_1.CipherSchema), cipherController.decrypt.bind(cipherController));
-app.post('/api/keyword/encrypt', keywordController.encrypt.bind(keywordController));
-app.post('/api/keyword/decrypt', keywordController.decrypt.bind(keywordController));
-app.post('/api/keyword/info', keywordController.getKeyInfo.bind(keywordController));
+app.post("/api/encrypt", (0, validation_middleware_1.validate)(keyword_schema_1.KeywordCipherSchema), cipherController.encrypt.bind(cipherController));
+app.post("/api/decrypt", (0, validation_middleware_1.validate)(keyword_schema_1.KeywordCipherSchema), cipherController.decrypt.bind(cipherController));
+// app.post('/api/keyword/encrypt', keywordController.encrypt.bind(keywordController));
+// app.post('/api/keyword/decrypt', keywordController.decrypt.bind(keywordController));
+// app.post('/api/keyword/info', keywordController.getKeyInfo.bind(keywordController));
 // Health check
 app.get("/api/health", (req, res) => {
     res.json({ status: "OK", timestamp: new Date().toISOString() });

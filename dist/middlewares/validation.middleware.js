@@ -10,8 +10,8 @@ const validate = (schema) => {
         catch (error) {
             res.status(400).json({
                 success: false,
-                error: 'خطای اعتبارسنجی',
-                details: error.errors
+                error: "خطای اعتبارسنجی",
+                details: error,
             });
         }
     };
