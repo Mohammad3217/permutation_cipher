@@ -7,10 +7,10 @@ export const validate = (schema: ZodType) => {
       schema.parse(req.body);
       next();
     } catch (error: unknown) {
-      console.error("Validation error:", error);
+      // console.error("Validation error:", error);
       
       if (error instanceof ZodError) {
-        // در نسخه جدید zod، از issues استفاده می‌شود نه errors
+        // 
         const firstError = error.issues[0];
         const firstField = firstError.path.join('.');
         const simpleMessage = firstField 

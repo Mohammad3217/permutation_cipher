@@ -11,6 +11,6 @@ export const errorHandler = (
   res.status(500).json({
     success: false,
     error: 'خطای داخلی سرور',
-    message: process.env.NODE_ENV === 'development' ? error.message : undefined
+    message: process.env.NODE_ENV === 'development' ? error.message : ""
   });
 };
