@@ -499,8 +499,8 @@
                     <strong>🔑 اطلاعات رمزنگاری:</strong><br>
                     کلمه کلید: "${data.keyword || keyword.toUpperCase()}"<br>
                     کلید عددی: <span dir="ltr">[${data.key.join(", ")}]</span><br>
-                    طول بلوک: ${data.key.length}
-                `;
+                    `;
+                    // طول بلوک: ${data.key.length}
           showResult(data.result, keyInfo);
           showToast("✅ " + data.message, "success");
 
@@ -538,9 +538,9 @@
           const keyInfo = `
                     <strong>🔑 اطلاعات رمزگشایی:</strong><br>
                     کلمه کلید: "${data.keyword || keyword.toUpperCase()}"<br>
-                    کلید عددی: [${data.key.join(", ")}]<br>
-                    طول بلوک: ${data.key.length}
-                `;
+                    کلید عددی: <span dir="ltr">[${data.key.join(", ")}]<span><br>
+                      `;
+                      // طول بلوک: ${data.key.length}
           showResult(data.result, keyInfo);
           showToast("✅ " + data.message, "success");
         } catch (error) {
