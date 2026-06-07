@@ -8,10 +8,6 @@
 
 https://permutation-cipher.onrender.com/
 
-یا
-
-https://permutation-cipher-lovat.vercel.app/index.html
-
 ## ✨ ویژگی‌ها
 
 - **رمزنگاری بلوکی** با طول بلوک دلخواه
@@ -25,7 +21,7 @@ https://permutation-cipher-lovat.vercel.app/index.html
 
 ## 🚀 نصب و اجرا
 
-### پیش‌نیازها
+###  پیش‌نیازها برای اجرای لوکال روی سیستم
 - Node.js (نسخه 18 یا بالاتر)
 - npm یا yarn
 
