@@ -9,9 +9,9 @@ const validate = (schema) => {
             next();
         }
         catch (error) {
-            console.error("Validation error:", error);
+            // console.error("Validation error:", error);
             if (error instanceof zod_1.ZodError) {
-                // در نسخه جدید zod، از issues استفاده می‌شود نه errors
+                // 
                 const firstError = error.issues[0];
                 const firstField = firstError.path.join('.');
                 const simpleMessage = firstField
