@@ -1,6 +1,6 @@
 export const sanitizeInput = (input: string): string => {
   // Remove dangerous characters but keep Persian, English letters, numbers, and basic punctuation
-  return input.replace(/[<>\\/'"]/g, '');
+  return input.replace(/[<>\\/'"\s]/g, '');
 };
 
 export const isValidKey = (key: any): key is number[] => {
