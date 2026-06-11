@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isValidKey = exports.sanitizeInput = void 0;
 const sanitizeInput = (input) => {
     // Remove dangerous characters but keep Persian, English letters, numbers, and basic punctuation
-    return input.replace(/[<>\\/'"]/g, '');
+    return input.replace(/[<>\\/'"\s]/g, '');
 };
 exports.sanitizeInput = sanitizeInput;
 const isValidKey = (key) => {
