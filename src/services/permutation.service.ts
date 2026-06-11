@@ -56,7 +56,6 @@ export class PermutationService {
     }
     let result = "";
     const inverseKey = this.getInverseKey(key);
-    console.log(inverseKey);
     for (const col of inverseKey) {
       if (col < 0 || col > blockSize) continue;
       for (let r = 0; r < rowCount; r++) {
